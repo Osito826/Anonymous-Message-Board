@@ -39,7 +39,9 @@ module.exports = function (app) {
   let Thread = mongoose.model("Thread", threadBoard);
   let Board = mongoose.model("Board", boardSchema);
 
-  app.route("/api/threads/:board").post(async (request, response) => {
+  app
+    .route("/api/threads/:board")
+    .post(async (request, response) => {
     const { text, delete_password } = request.body;
     let board = request.body.board;
     if (!board) {
