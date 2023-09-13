@@ -10,20 +10,19 @@ module.exports = function (app) {
     "@cluster0.ckgo56z.mongodb.net/message_board?retryWrites=true&w=majority";
 
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  const date = new Date();
   //creating Schemas thread/reply
   let replyBoard = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, default: date },
+    created_on: { type: Date, default: new Date() },
     reported: { type: Boolean, default: false },
-    bumped_on: { type: Date, default: date },
+    bumped_on: { type: Date, default: new Date() },
     delete_password: { type: String },
   });
 
   let threadBoard = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, default: date },
-    bumped_on: { type: Date, default: date },
+    created_on: { type: Date, default: new Date() },
+    bumped_on: { type: Date, default: new Date() },
     reported: { type: Boolean, default: false },
     delete_password: { type: String },
     replies: { type: [replyBoard] },
