@@ -46,7 +46,7 @@ module.exports = function (app) {
       if (!board) {
         board = request.params.board;
       }
-      let currentDate = new Date();
+      let currentDate = new Date().toUTCString();
       let newThread = new Thread({
         text: text,
         delete_password: delete_password,
@@ -87,15 +87,15 @@ module.exports = function (app) {
           arrayOfThreads.forEach((thread) => {
             thread["replycount"] = thread.replies.length;
 
-            /* Sort Replies by Date */
+            // Sort Replies by Date 
             thread.replies.sort((thread1, thread2) => {
               return thread2.created_on - thread1.created_on;
             });
 
-            /* Limit Replies to 3 */
+            // Limit Replies to 3 
             thread.replies = thread.replies.slice(0, 3);
 
-            /* Remove Delete Pass from Replies */
+            /* Remove Delete Pass from Replies 
             thread.replies.forEach((reply) => {
               reply.delete_password = undefined;
               reply.reported = undefined;
