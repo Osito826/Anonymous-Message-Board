@@ -25,12 +25,12 @@ module.exports = function (app) {
     bumped_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
     delete_password: { type: String },
-    replies: { type: [replyBoard] },
+    replies: [replyBoard],
   });
 
   let boardSchema = new mongoose.Schema({
     name: { type: String },
-    threads: { type: [threadBoard] },
+    threads: [threadBoard],
   });
 
   //creating thread/reply model
@@ -38,84 +38,73 @@ module.exports = function (app) {
   let Thread = mongoose.model("Thread", threadBoard);
   let Board = mongoose.model("Board", boardSchema);
 
-  app.route("/api/threads/:board").post(async (request, response) => {
-    const { text, delete_password } = request.body;
-    let board = request.body.board;
-    if (!board) {
-      board = request.params.board;
-    }
-    let currentDate = new Date();
-    let newThread = new Thread({
-      text: text,
-      delete_password: delete_password,
-      created_on: currentDate,
-      bumped_on: currentDate,
-      replies: [],
-    });
-    console.log(newThread);
-    try {
-      const boardData = await Board.findOne({ name: board });
+  app
+    .route("/api/threads/:board")
+    .post(async (request, response) => {
+      const { text, delete_password } = request.body;
+      let board = request.body.board;
+      if (!board) {
+        board = request.params.board;
+      }
+      let currentDate = new Date();
+      let newThread = new Thread({
+        text: text,
+        delete_password: delete_password,
+        created_on: currentDate,
+        bumped_on: currentDate,
+        replies: [],
+      });
+      console.log(newThread);
+
+      let boardData = await Board.findOne({ name: board });
       if (!boardData) {
-        const newBoard = new Board({
+        let newBoard = new Board({
           name: board,
           threads: [],
         });
         console.log(newBoard);
         newBoard.threads.push(newThread);
-        const data = await newBoard.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
-        }
+        await newBoard.save();
       } else {
         boardData.threads.push(newThread);
-        const data = await boardData.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
+        await boardData.save();
+      }
+    })
+
+    .get(async (request, response) => {
+      try {
+        const arrayOfThreads = await Thread.find({
+          board: request.params.board,
+        })
+          .sort({ bumped_on: "desc" })
+          .limit(10)
+          .select("-delete_password -reported")
+          .lean()
+          .exec();
+
+        if (arrayOfThreads) {
+          arrayOfThreads.forEach((thread) => {
+            thread["replycount"] = thread.replies.length;
+
+            /* Sort Replies by Date */
+            thread.replies.sort((thread1, thread2) => {
+              return thread2.created_on - thread1.created_on;
+            });
+
+            /* Limit Replies to 3 */
+            thread.replies = thread.replies.slice(0, 3);
+
+            /* Remove Delete Pass from Replies */
+            thread.replies.forEach((reply) => {
+              reply.delete_password = undefined;
+              reply.reported = undefined;
+            });
+          });
+
+          return response.json(arrayOfThreads);
         }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  })
-
-  .get(async (request, response) => {
-    try {
-      const arrayOfThreads = await Thread.find({ board: request.params.board })
-        .sort({ bumped_on: "desc" })
-        .limit(10)
-        .select("-delete_password -reported")
-        .lean()
-        .exec();
-
-      if (arrayOfThreads) {
-        arrayOfThreads.forEach((thread) => {
-          thread["replycount"] = thread.replies.length;
-
-          /* Sort Replies by Date */
-          thread.replies.sort((thread1, thread2) => {
-            return thread2.created_on - thread1.created_on;
-          });
-
-          /* Limit Replies to 3 */
-          thread.replies = thread.replies.slice(0, 3);
-
-          /* Remove Delete Pass from Replies */
-          thread.replies.forEach((reply) => {
-            reply.delete_password = undefined;
-            reply.reported = undefined;
-          });
-        });
-
-        return response.json(arrayOfThreads);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
-  
+    });
 };
