@@ -42,7 +42,7 @@ module.exports = function (app) {
     .route("/api/threads/:board")
     .post(async (request, response) => {
     const { text, delete_password } = request.body;
-    const board = request.body.board;
+    let board = request.body.board;
     if (!board) {
       board = request.params.board;
     }
