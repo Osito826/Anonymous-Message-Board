@@ -42,13 +42,16 @@ module.exports = function (app) {
     .route("/api/threads/:board")
     .post(async (request, response) => {
     const { text, delete_password } = request.body;
-    let board = request.body.board;
+    const board = request.body.board;
     if (!board) {
       board = request.params.board;
     }
+    let currentDate = new Date()
     const newThread = new Thread({
       text: text,
       delete_password: delete_password,
+      created_on: currentDate,
+      bumped_on: currentDate,
       replies: [],
     });
     console.log(newThread);
