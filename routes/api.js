@@ -44,8 +44,8 @@ module.exports = function (app) {
     if (!board) {
       board = request.params.board;
     }
-    let currentDate = new Date().toUTCString();
-    let newThread = new Thread({
+    let currentDate = new Date();
+    let newThread = Thread.create({
       text: text,
       delete_password: delete_password,
       created_on: currentDate,
