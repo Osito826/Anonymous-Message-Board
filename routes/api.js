@@ -69,6 +69,7 @@ module.exports = function (app) {
         boardData.threads.push(newThread);
         await boardData.save();
       }
+      return response.redirect(`/b/${board}/`);
     })
 
     .get(async (request, response) => {
