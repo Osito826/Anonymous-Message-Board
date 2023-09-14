@@ -45,7 +45,7 @@ module.exports = function (app) {
       board = request.params.board;
     }
     let currentDate = new Date();
-    let newThread = await Thread.create({
+    let newThread = new Thread({
       text: text,
       delete_password: delete_password,
       created_on: currentDate,
