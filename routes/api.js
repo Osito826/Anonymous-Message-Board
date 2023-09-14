@@ -85,7 +85,7 @@ module.exports = function (app) {
   .get(async (request, response) => {
     try {
       const arrayOfThreads = await Thread.find({ board: request.params.board })
-        .sort({ bumpedon_: "desc" })
+        .sort({ bumped_on: "desc" })
         .limit(10)
         .select("-delete_password -reported")
         .lean()
@@ -97,7 +97,7 @@ module.exports = function (app) {
 
           /* Sort Replies by Date */
           thread.replies.sort((thread1, thread2) => {
-            return thread2.createdon_ - thread1.createdon_;
+            return thread2.created_on - thread1.created_on;
           });
 
           /* Limit Replies to 3 */
