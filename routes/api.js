@@ -80,9 +80,9 @@ module.exports = function (app) {
     } catch (err) {
       console.log(err);
     }
-  });
+  })
 
-  app.get("/api/threads/:board", async (request, response) => {
+  .get(async (request, response) => {
     try {
       const arrayOfThreads = await Thread.find({ board: request.params.board })
         .sort({ bumpedon_: "desc" })
