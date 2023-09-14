@@ -15,7 +15,7 @@ module.exports = function (app) {
     text: { type: String },
     created_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
-    bumped_on: { type: Date, required: true },
+    //bumped_on: { type: Date, required: true },
     delete_password: { type: String },
   });
 
