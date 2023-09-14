@@ -47,7 +47,7 @@ module.exports = function (app) {
       board = request.params.board;
     }
     let currentDate = new Date()
-    const newThread = new Thread({
+    let newThread = new Thread({
       text: text,
       delete_password: delete_password,
       created_on: currentDate,

@@ -19,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const helmet = require("helmet")
 
-app.use(
+/*app.use(
   helmet.frameguard({
     action: "sameorigin",
   })
 );
-
+*/
 app.use(helmet.dnsPrefetchControl({
   allow: false
 }))
