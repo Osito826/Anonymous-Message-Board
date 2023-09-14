@@ -13,16 +13,16 @@ module.exports = function (app) {
   //creating Schemas thread/reply
   let replyBoard = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, default: new Date() },
+    created_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
-    bumped_on: { type: Date, default: new Date() },
+    bumped_on: { type: Date, required: true },
     delete_password: { type: String },
   });
 
   let threadBoard = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, default: new Date() },
-    bumped_on: { type: Date, default: new Date() },
+    created_on: { type: Date, required: true },
+    bumped_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
     delete_password: { type: String },
     replies: { type: [replyBoard] },
