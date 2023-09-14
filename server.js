@@ -23,8 +23,8 @@ const helmet = require("helmet")
   helmet.frameguard({
     action: "sameorigin",
   })
-);
-*/
+);*/
+
 app.use(helmet.dnsPrefetchControl({
   allow: false
 }))
