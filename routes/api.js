@@ -38,50 +38,16 @@ module.exports = function (app) {
   let Thread = mongoose.model("Thread", threadBoard);
   let Board = mongoose.model("Board", boardSchema);
 
-  app
-    .route("/api/threads/:board")
-    .post(async (request, response) => {
-    const { text, delete_password } = request.body;
-    let board = request.body.board;
-    if (!board) {
-      board = request.params.board;
-    }
-    let currentDate = new Date()
-    let newThread = new Thread({
-      text: text,
-      delete_password: delete_password,
-      created_on: currentDate,
-      bumped_on: currentDate,
+  app.route("/api/threads/:board").post(async (req, res) => {
+    const { board } = req.params;
+    const { text, delete_password } = req.body;
+
+    const thread = await Thread.create({
+      text,
+      delete_password,
       replies: [],
     });
-    console.log(newThread);
-    try {
-      const boardData = await Board.findOne({ name: board });
-      if (!boardData) {
-        const newBoard = new Board({
-          name: board,
-          threads: [],
-        });
-        console.log(newBoard);
-        newBoard.threads.push(newThread);
-        const data = await newBoard.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
-        }
-      } else {
-        boardData.threads.push(newThread);
-        const data = await boardData.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    res.send(thread);
   });
 
   app.route("/api/replies/:board");
