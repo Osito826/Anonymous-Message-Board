@@ -41,8 +41,24 @@ module.exports = function (app) {
   const Reply = mongoose.model("Reply", replySchema);
   const Thread = mongoose.model("Thread", threadSchema);
   const Board = mongoose.model("Board", boardSchema);
+  
+  app.route('/api/threads/:board')
+    .post(async (req, res) => {
+      // POST ROUTE
+      const { board } = req.params
+      const { text, delete_password } = req.body
 
-  app.route("/api/threads/:board").post(async (request, response) => {
+      const thread = await Thread.create({
+        board,
+        text,
+        delete_password,
+        replies: [],
+      })
+      res.send(thread)
+    })
+
+
+  /*app.route("/api/threads/:board").post(async (request, response) => {
     const { text, delete_password } = request.body;
     let board = request.body.board;
     if (!board) {
@@ -58,7 +74,9 @@ module.exports = function (app) {
       replies: [],
     });
     console.log(newThread);
-    try {
+    response.send(newThread);
+
+    /*try {
       const boardData = await Board.findOne({ name: board });
       if (!boardData) {
         const newBoard = new Board({
@@ -71,7 +89,7 @@ module.exports = function (app) {
         if (!data) {
           response.send("There was an error saving in post");
         } else {
-          response.send(newThread);
+          response.json(newThread);
         }
       } else {
         boardData.threads.push(newThread);
@@ -79,11 +97,11 @@ module.exports = function (app) {
         if (!data) {
           response.send("There was an error saving in post");
         } else {
-          response.send(newThread);
+          response.json(newThread);
         }
       }
     } catch (err) {
       console.log(err);
     }
-  });
+  });*/
 };
