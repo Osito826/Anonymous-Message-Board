@@ -1,7 +1,7 @@
 "use strict";
 
-let mongodb = require("mongodb");
-let mongoose = require("mongoose");
+const mongodb = require("mongodb");
+const mongoose = require("mongoose");
 
 module.exports = function (app) {
   let uri =
