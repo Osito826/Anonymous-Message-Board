@@ -13,7 +13,7 @@ module.exports = function (app) {
   //creating Schemas thread/reply
   const replySchema = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, required: true },
+    created_on: { type: Date, required: true, default: new Date() },
     reported: { type: Boolean, default: false },
     //bumped_on: { type: Date, required: true },
     delete_password: { type: String },
@@ -114,7 +114,17 @@ module.exports = function (app) {
       res.send(threads);
     });
 
-  app.route("/api/replies/:board").post(async (req, res) => {});
+  app.route("/api/replies/:board").post(async (req, res) => {
+    const { text, delete_password, thread_id} = req.body;
+    const board = req.params;
+    
+    const newReply = await Reply.create({
+      board,
+      text,
+      delete_password
+    })
+    
+  });
 };
 /*
 app.route("/api/threads/:board").post((req, res) => {
