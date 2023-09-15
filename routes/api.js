@@ -20,10 +20,7 @@ module.exports = function (app) {
   });
 
   const threadSchema = new mongoose.Schema({
-    board: {
-      type: String,
-      required: true,
-    },
+    board: { type: String, required: true },
     text: { type: String },
     created_on: { type: Date, required: true, default: new Date() },
     bumped_on: { type: Date, required: true, default: new Date() },
