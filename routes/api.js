@@ -87,6 +87,7 @@ module.exports = function (app) {
       let threads = await Thread.find({ board })
         .sort("-bumped_on")
         .populate("replies");
+      console.log(threads)
 
       threads = threads
         .map((thread) => {
