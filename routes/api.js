@@ -44,8 +44,50 @@ module.exports = function (app) {
 
   app
     .route("/api/threads/:board")
-    .post(async (request, response) => {
-      const { text, delete_password } = request.body;
+    .post(async (req, res) => {
+      const { text, delete_password } = req.body;
+      let board = req.body.board;
+      if (!board) {
+        board = req.params.board;
+      }
+
+      const newThread = new Thread({
+        board,
+        text,
+        delete_password,
+        //created_on: currentDate,
+        //bumped_on: currentDate,
+        replies: [],
+      });
+
+      try {
+        const boardData = await Board.findOne({ name: board });
+        if (!boardData) {
+          const newBoard = new Board({
+            name: board,
+            threads: [],
+          });
+          newBoard.threads.push(newThread);
+          const data = await newBoard.save();
+          if (data) {
+            res.send("There was an error saving in post");
+          } else {
+            res.json(newThread);
+          }
+        } else {
+          boardData.threads.push(newThread);
+          const data = await boardData.save();
+          if (err || !data) {
+            res.send("There was an error saving in post");
+          } else {
+            res.json(newThread);
+          }
+        }
+      } catch (err) {
+        res.send("There was an error saving in post");
+      }
+
+      /*const { text, delete_password } = request.body;
       const { board } = request.params;
       //let board = request.body.board;
 
@@ -60,34 +102,7 @@ module.exports = function (app) {
       });
       console.log(newThread);
       response.send(newThread);
-
-      /*try {
-        const boardData = await Board.findOne({ name: board });
-        if (!boardData) {
-          const newBoard = new Board({
-            name: board,
-            threads: [],
-          });
-          newBoard.threads.push(newThread);
-          console.log(newBoard);
-          const data = await newBoard.save();
-          if (!data) {
-            response.send("There was an error saving in post");
-          } else {
-            response.json(newThread);
-          }
-        } else {
-          boardData.threads.push(newThread);
-          const data = await boardData.save();
-          if (!data) {
-            response.send("There was an error saving in post");
-          } else {
-            response.json(newThread);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }*/
+*/
     })
     .get(async (req, res) => {
       // GET ROUTE
@@ -121,30 +136,45 @@ module.exports = function (app) {
       res.send(threads);
     });
 };
-
-
-app.route("/api/threads/:board").post((req,res)=>{
-  const{text, delete_password}=req.body
+/*
+app.route("/api/threads/:board").post((req, res) => {
+  const { text, delete_password } = req.body;
   let board = req.body.board;
-  if(!board){
-    board= req.params.board;
+  if (!board) {
+    board = req.params.board;
   }
-  
-  const newThread = await Thread.create({
-        board,
-        text,
-        delete_password,
-        //created_on: currentDate,
-        //bumped_on: currentDate,
-        replies: [],
-      });
-  Board.findOne({name:board}, (err,boardData)=>{
-    if(!boardData){
+
+  const newThread = new Thread({
+    board,
+    text,
+    delete_password,
+    //created_on: currentDate,
+    //bumped_on: currentDate,
+    replies: [],
+  });
+  Board.findOne({ name: board }, (err, boardData) => {
+    if (!boardData) {
       const newBoard = new Board({
-            name: board,
-            threads: [],
-          });
+        name: board,
+        threads: [],
+      });
+      newBoard.threads.push(newThread);
+      newBoard.save((err, data) => {
+        if (err || !data) {
+          res.send("There was an error saving in post");
+        } else {
+          res.json(newThread);
+        }
+      });
+    } else {
+      boardData.threads.push(newThread);
+      boardData.save((err, data) => {
+        if (err || !data) {
+          res.send("There was an error saving in post");
+        } else {
+          res.json(newThread);
+        }
+      });
     }
-  })
-  
-})
+  });
+});*/
