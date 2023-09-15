@@ -38,41 +38,51 @@ module.exports = function (app) {
   let Thread = mongoose.model("Thread", threadBoard);
   let Board = mongoose.model("Board", boardSchema);
 
-  app
-    .route("/api/threads/:board")
-    .post(async (request, response) => {
-      const { text, delete_password } = request.body;
-      let board = request.body.board;
-      if (!board) {
-        board = request.params.board;
-      }
-      let currentDate = new Date().toUTCString();
-      let newThread = new Thread({
-        text: text,
-        delete_password: delete_password,
-        created_on: currentDate,
-        bumped_on: currentDate,
-        replies: [],
-      });
-      console.log(newThread);
-
-      let boardData = await Board.findOne({ name: board });
+  app.route("/api/threads/:board").post(async (request, response) => {
+    const { text, delete_password } = request.body;
+    let board = request.body.board;
+    if (!board) {
+      board = request.params.board;
+    }
+    let currentDate = new Date();
+    let newThread = new Thread({
+      text: text,
+      delete_password: delete_password,
+      created_on: currentDate,
+      bumped_on: currentDate,
+      replies: [],
+    });
+    console.log(newThread);
+    try {
+      const boardData = await Board.findOne({ name: board });
       if (!boardData) {
-        let newBoard = new Board({
+        const newBoard = new Board({
           name: board,
           threads: [],
         });
         console.log(newBoard);
         newBoard.threads.push(newThread);
-        await newBoard.save();
+        const data = await newBoard.save();
+        if (!data) {
+          response.send("There was an error saving in post");
+        } else {
+          response.json(newThread);
+        }
       } else {
         boardData.threads.push(newThread);
-        await boardData.save();
+        const data = await boardData.save();
+        if (!data) {
+          response.send("There was an error saving in post");
+        } else {
+          response.json(newThread);
+        }
       }
-      return response.redirect(`/b/${board}/`);
-    })
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
-    .get(async (request, response) => {
+    /*.get(async (request, response) => {
       try {
         const arrayOfThreads = await Thread.find({
           board: request.params.board,
@@ -95,7 +105,7 @@ module.exports = function (app) {
             // Limit Replies to 3 
             thread.replies = thread.replies.slice(0, 3);
 
-            /* Remove Delete Pass from Replies 
+            // Remove Delete Pass from Replies 
             thread.replies.forEach((reply) => {
               reply.delete_password = undefined;
               reply.reported = undefined;
@@ -107,5 +117,5 @@ module.exports = function (app) {
       } catch (error) {
         console.log(error);
       }
-    });
+    });*/
 };

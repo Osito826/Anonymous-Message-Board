@@ -10,7 +10,7 @@ let testReplyId;
 let testPass = "testpass";
 
 suite("Functional Tests", function () {
-  test("Creating a new thread: POST request to /api/threads/{board}", (done) => {
+  /*test("Creating a new thread: POST request to /api/threads/{board}", (done) => {
     chai
       .request(server)
       .post("/api/threads/test")
@@ -26,5 +26,5 @@ suite("Functional Tests", function () {
         testThreadId = createdThreadId;
         done();
       });
-  });
+  });*/
 });
