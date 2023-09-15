@@ -123,7 +123,12 @@ module.exports = function (app) {
       text,
       delete_password
     })
-    
+    try{
+      let threadData = await Thread.findById({thread_id});
+      if(threadData){
+        threadData.bumped_on
+      }
+    }
   });
 };
 /*
