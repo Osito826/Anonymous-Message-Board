@@ -8,10 +8,6 @@ chai.use(chaiHttp);
 const threadPostData = { board: "test", text: "test", delete_password: "test" };
 let replyData = { text: "test", delete_password: "test", board: "test" };
 
-let testThreadId;
-let testReplyId;
-let testPass = "testpass";
-
 suite("Functional Tests", function () {
   test("POST: Creating a new thread", function (done) {
     chai
