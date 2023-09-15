@@ -11,7 +11,7 @@ module.exports = function (app) {
 
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   //creating Schemas thread/reply
-  const replyBoard = new mongoose.Schema({
+  const replySchema = new mongoose.Schema({
     text: { type: String },
     created_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
@@ -19,24 +19,24 @@ module.exports = function (app) {
     delete_password: { type: String },
   });
 
-  const threadBoard = new mongoose.Schema({
+  const threadSchema = new mongoose.Schema({
     text: { type: String },
     created_on: { type: Date, required: true, default: new Date(), },
     bumped_on: { type: Date, required: true, default: new Date(), },
     reported: { type: Boolean, default: false },
     delete_password: { type: String },
-    replies: [replyBoard],
+    replies: [replySchema],
   });
 
   const boardSchema = new mongoose.Schema({
     name: { type: String },
-    threads: [threadBoard],
+    threads: [threadSchema],
   });
 
   //creating thread/reply model
-  let Reply = mongoose.model("Reply", replyBoard);
-  let Thread = mongoose.model("Thread", threadBoard);
-  let Board = mongoose.model("Board", boardSchema);
+  const Reply = mongoose.model("Reply", replySchema);
+  const Thread = mongoose.model("Thread", threadSchema);
+  const Board = mongoose.model("Board", boardSchema);
 
   app.route('/api/threads/:board')
     .post(async (req, res) => {
