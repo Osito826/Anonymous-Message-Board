@@ -60,24 +60,32 @@ module.exports = function (app) {
       });
       console.log(newThread);
 
-      const boardData = await Board.findOne({ name: board });
-      if (!boardData) {
-        const newBoard = new Board({
-          name: board,
-          threads: [],
-        });
-        newBoard.threads.push(newThread);
-        console.log(newBoard);
-        const data = await newBoard.save();
-        if (data) {
-          response.send(newThread);
+      try {
+        const boardData = await Board.findOne({ name: board });
+        if (!boardData) {
+          const newBoard = new Board({
+            name: board,
+            threads: [],
+          });
+          newBoard.threads.push(newThread);
+          console.log(newBoard);
+          const data = await newBoard.save();
+          if (!data) {
+            response.send("There was an error saving in post");
+          } else {
+            response.json(newThread);
+          }
+        } else {
+          boardData.threads.push(newThread);
+          const data = await boardData.save();
+          if (!data) {
+            response.send("There was an error saving in post");
+          } else {
+            response.json(newThread);
+          }
         }
-      } else {
-        boardData.threads.push(newThread);
-        const data = await boardData.save();
-        if (data) {
-          response.send(newThread);
-        }
+      } catch (err) {
+        console.log(err);
       }
     })
     .get(async (req, res) => {
