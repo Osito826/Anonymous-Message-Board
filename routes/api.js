@@ -121,3 +121,30 @@ module.exports = function (app) {
       res.send(threads);
     });
 };
+
+
+app.route("/api/threads/:board").post((req,res)=>{
+  const{text, delete_password}=req.body
+  let board = req.body.board;
+  if(!board){
+    board= req.params.board;
+  }
+  
+  const newThread = await Thread.create({
+        board,
+        text,
+        delete_password,
+        //created_on: currentDate,
+        //bumped_on: currentDate,
+        replies: [],
+      });
+  Board.findOne({name:board}, (err,boardData)=>{
+    if(!boardData){
+      const newBoard = new Board({
+            name: board,
+            threads: [],
+          });
+    }
+  })
+  
+})
