@@ -80,23 +80,6 @@ module.exports = function (app) {
       } catch (err) {
         res.send("There was an error saving in post");
       }
-
-      /*const { text, delete_password } = request.body;
-      const { board } = request.params;
-      //let board = request.body.board;
-
-      //let currentDate = new Date();
-      const newThread = await Thread.create({
-        board,
-        text,
-        delete_password,
-        //created_on: currentDate,
-        //bumped_on: currentDate,
-        replies: [],
-      });
-      console.log(newThread);
-      response.send(newThread);
-*/
     })
     .get(async (req, res) => {
       // GET ROUTE
