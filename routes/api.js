@@ -59,8 +59,9 @@ module.exports = function (app) {
         replies: [],
       });
       console.log(newThread);
+      response.send(newThread);
 
-      try {
+      /*try {
         const boardData = await Board.findOne({ name: board });
         if (!boardData) {
           const newBoard = new Board({
@@ -86,7 +87,7 @@ module.exports = function (app) {
         }
       } catch (err) {
         console.log(err);
-      }
+      }*/
     })
     .get(async (req, res) => {
       // GET ROUTE
