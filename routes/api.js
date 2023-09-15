@@ -46,10 +46,10 @@ module.exports = function (app) {
     .route("/api/threads/:board")
     .post(async (req, res) => {
       const { text, delete_password } = req.body;
-      let board = req.body.board;
-      if (!board) {
+      const { board } = req.params;
+      /*if (!board) {
         board = req.params.board;
-      }
+      }*/
 
       const newThread = new Thread({
         board,
@@ -70,16 +70,12 @@ module.exports = function (app) {
           newBoard.threads.push(newThread);
           const data = await newBoard.save();
           if (data) {
-            res.send("There was an error saving in post");
-          } else {
-            res.json(newThread);
+            res.send(newThread);
           }
         } else {
           boardData.threads.push(newThread);
           const data = await boardData.save();
-          if (err || !data) {
-            res.send("There was an error saving in post");
-          } else {
+          if (data) {
             res.json(newThread);
           }
         }
