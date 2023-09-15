@@ -46,10 +46,10 @@ module.exports = function (app) {
     .route("/api/threads/:board")
     .post(async (req, res) => {
       const { text, delete_password } = req.body;
-      const { board } = req.params;
-      /*if (!board) {
+      let  board  = req.body.board;
+      if (!board) {
         board = req.params.board;
-      }*/
+      }
 
       const newThread = await Thread.create({
         board,

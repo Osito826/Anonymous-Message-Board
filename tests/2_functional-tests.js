@@ -14,10 +14,10 @@ suite("Functional Tests", function () {
       .request(server)
       .post("/api/threads/test")
       .send(threadPostData)
-      .end((err, res) => {
+      .end(async(err, res) => {
         assert.equal(res.status, 200);
-        //assert.isDefined(res.body._id);
-        //assert.isArray(res.body.replies);
+        assert.isDefined(res.body._id);
+        assert.isArray(res.body.replies);
       });
     done();
   });
