@@ -43,7 +43,7 @@ module.exports = function (app) {
     .route("/api/threads/:board")
     .post(async (req, res) => {
       const { text, delete_password } = req.body;
-      let  board  = req.body.board;
+      let board = req.body.board;
       if (!board) {
         board = req.params.board;
       }
@@ -65,7 +65,7 @@ module.exports = function (app) {
             threads: [],
           });
           newBoard.threads.push(newThread);
-          console.log(newThread)
+          console.log(newThread);
           const data = await newBoard.save();
           if (data) {
             res.json(newThread);
@@ -87,7 +87,7 @@ module.exports = function (app) {
       let threads = await Thread.find({ board })
         .sort("-bumped_on")
         .populate("replies");
-      console.log(threads)
+      console.log(threads);
 
       threads = threads
         .map((thread) => {
@@ -113,6 +113,8 @@ module.exports = function (app) {
         .slice(0, 10);
       res.send(threads);
     });
+
+  app.route("/api/replies/:board").post(async (req, res) => {});
 };
 /*
 app.route("/api/threads/:board").post((req, res) => {
