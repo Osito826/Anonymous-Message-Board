@@ -5,26 +5,24 @@ const server = require("../server");
 
 chai.use(chaiHttp);
 
+const threadPostData = { board: "test", text: "test", delete_password: "test" };
+let replyData = { text: "test", delete_password: "test", board: "test" };
+
 let testThreadId;
 let testReplyId;
 let testPass = "testpass";
 
 suite("Functional Tests", function () {
-  /*test("Creating a new thread: POST request to /api/threads/{board}", (done) => {
+  test("POST: Creating a new thread", function (done) {
     chai
       .request(server)
       .post("/api/threads/test")
-      .send({
-        board: "test",
-        text: "testing the thread",
-        delete_password: testPass,
-      })
-      .end((err, res) => {
+      .send(threadPostData)
+      .end(async (err, res) => {
         assert.equal(res.status, 200);
-        let createdThreadId =
-          res.redirects[0].split("/")[res.redirects[0].split("/").length - 1];
-        testThreadId = createdThreadId;
-        done();
+        assert.isDefined(res.body._id);
+        assert.isArray(res.body.replies);
       });
-  });*/
+    done();
+  });
 });

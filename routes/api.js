@@ -66,7 +66,7 @@ module.exports = function (app) {
         if (!data) {
           response.send("There was an error saving in post");
         } else {
-          response.json(newThread);
+          response.send(newThread);
         }
       } else {
         boardData.threads.push(newThread);
@@ -74,7 +74,7 @@ module.exports = function (app) {
         if (!data) {
           response.send("There was an error saving in post");
         } else {
-          response.json(newThread);
+          response.send(newThread);
         }
       }
     } catch (err) {
