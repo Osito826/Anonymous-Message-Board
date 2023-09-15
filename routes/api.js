@@ -51,7 +51,7 @@ module.exports = function (app) {
         board = req.params.board;
       }*/
 
-      const newThread = new Thread({
+      const newThread = await Thread.create({
         board,
         text,
         delete_password,
@@ -68,9 +68,10 @@ module.exports = function (app) {
             threads: [],
           });
           newBoard.threads.push(newThread);
+          console.log(newThread)
           const data = await newBoard.save();
           if (data) {
-            res.send(newThread);
+            res.json(newThread);
           }
         } else {
           boardData.threads.push(newThread);
