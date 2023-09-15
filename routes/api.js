@@ -11,7 +11,7 @@ module.exports = function (app) {
 
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   //creating Schemas thread/reply
-  let replyBoard = new mongoose.Schema({
+  const replyBoard = new mongoose.Schema({
     text: { type: String },
     created_on: { type: Date, required: true },
     reported: { type: Boolean, default: false },
@@ -19,16 +19,16 @@ module.exports = function (app) {
     delete_password: { type: String },
   });
 
-  let threadBoard = new mongoose.Schema({
+  const threadBoard = new mongoose.Schema({
     text: { type: String },
-    created_on: { type: Date, required: true },
-    bumped_on: { type: Date, required: true },
+    created_on: { type: Date, required: true, default: new Date(), },
+    bumped_on: { type: Date, required: true, default: new Date(), },
     reported: { type: Boolean, default: false },
     delete_password: { type: String },
     replies: [replyBoard],
   });
 
-  let boardSchema = new mongoose.Schema({
+  const boardSchema = new mongoose.Schema({
     name: { type: String },
     threads: [threadBoard],
   });
@@ -38,49 +38,67 @@ module.exports = function (app) {
   let Thread = mongoose.model("Thread", threadBoard);
   let Board = mongoose.model("Board", boardSchema);
 
-  app.route("/api/threads/:board").post(async (request, response) => {
-    const { text, delete_password } = request.body;
-    let board = request.body.board;
-    if (!board) {
-      board = request.params.board;
-    }
-    let currentDate = new Date();
-    let newThread = new Thread({
-      text: text,
-      delete_password: delete_password,
-      created_on: currentDate,
-      bumped_on: currentDate,
-      replies: [],
-    });
-    console.log(newThread);
-    try {
-      const boardData = await Board.findOne({ name: board });
-      if (!boardData) {
-        const newBoard = new Board({
-          name: board,
-          threads: [],
-        });
-        console.log(newBoard);
-        newBoard.threads.push(newThread);
-        const data = await newBoard.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
+  app.route('/api/threads/:board')
+    .post(async (req, res) => {
+      // POST ROUTE
+      const { board } = req.params
+      const { text, delete_password } = req.body
+
+      const thread = await Thread.create({
+        board,
+        text,
+        delete_password,
+        replies: [],
+      })
+      res.send(thread)
+    })
+    .get(async (req, res) => {
+      // GET ROUTE
+      const { board } = req.params
+      let threads = await Thread.find({ board }).sort("-bumped_on").populate("replies")
+
+      threads = threads.map(thread => {
+        let threadToView = {
+          _id: thread._id,
+          text: thread.text,
+          created_on: thread.created_on,
+          bumped_on: thread.bumped_on,
+          replies: thread.replies.sort((a, b) => a.created_on - b.created_on).slice(0, 3).map(reply => {
+            let rep = {
+              _id: reply._id,
+              text: reply.text,
+              created_on: reply.created_on,
+            }
+            return rep
+          }),
         }
+        return threadToView
+      }).slice(0, 10)
+      res.send(threads)
+    })
+    .delete(async (req, res) => {
+      // DELETE ROUTE
+      const { board, thread_id, delete_password } = req.body
+      let threadToDelete = await Thread.findById(thread_id)
+      if (threadToDelete && threadToDelete.delete_password === delete_password) {
+        await threadToDelete.remove()
+        res.send("success")
       } else {
-        boardData.threads.push(newThread);
-        const data = await boardData.save();
-        if (!data) {
-          response.send("There was an error saving in post");
-        } else {
-          response.json(newThread);
-        }
+        res.send("incorrect password")
       }
-    } catch (err) {
-      console.log(err);
-    }
-  });
+    })
+    .put(async (req, res) => {
+      // PUT ROUTE
+      const { board, thread_id } = req.body
+      let threadToUpdate = await Thread.findById(thread_id)
+      if (threadToUpdate) {
+        threadToUpdate.reported = true
+        await threadToUpdate.save()
+        res.send("reported")
+      } else {
+        res.send("incorrect thread id")
+      }
+    })
 
     /*.get(async (request, response) => {
       try {
