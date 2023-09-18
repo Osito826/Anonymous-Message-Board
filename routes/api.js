@@ -127,7 +127,7 @@ module.exports = function (app) {
     })
     console.log(newReply);
     try{
-      let threadData = await Thread.findById({thread_id});
+      let threadData = await Thread.findById(thread_id);
       if(threadData){
         threadData.bumped_on = newTime;
         threadData.replies.push(newReply);
