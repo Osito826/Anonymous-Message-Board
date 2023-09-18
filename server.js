@@ -21,7 +21,7 @@ const helmet = require("helmet");
 /*
 app.use(
   helmet.frameguard({
-    action: "sameorigin",
+    action: "same-origin",
   })
 );
 */
