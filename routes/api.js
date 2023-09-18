@@ -118,16 +118,21 @@ module.exports = function (app) {
     const { text, delete_password, thread_id} = req.body;
     const board = req.params;
     
+    let newTime = new Date();
     const newReply = await Reply.create({
       board,
       text,
-      delete_password
+      delete_password,
+      created_on: newTime,
     })
     try{
       let threadData = await Thread.findById({thread_id});
       if(threadData){
-        threadData.bumped_on
+        threadData.bumped_on = newTime;
+        threadData.replies.push(newReply);
       }
+    } catch(error){
+      console.log(error);
     }
   });
 };
