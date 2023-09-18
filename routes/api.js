@@ -134,9 +134,10 @@ module.exports = function (app) {
     } catch (error) {
       console.log(error);
     }
-  });
-}
+  })
   .get(async (req, res) => {});
+  
+};
 /*
 app.route("/api/threads/:board").post((req, res) => {
   const { text, delete_password } = req.body;
@@ -177,5 +178,4 @@ app.route("/api/threads/:board").post((req, res) => {
         }
       });
     }
-  });
-});*/
+  });*/
