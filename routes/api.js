@@ -79,5 +79,4 @@ module.exports = function (app) {
       res.send("There was an error saving in post");
     }
   });
-}
-    
+};
