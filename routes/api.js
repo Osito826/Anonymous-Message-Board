@@ -65,7 +65,7 @@ module.exports = function (app) {
             threads: [],
           });
           newBoard.threads.push(newThread);
-          console.log(newThread);
+          //console.log(newThread);
           const data = await newBoard.save();
           if (data) {
             res.json(newThread);
@@ -87,7 +87,7 @@ module.exports = function (app) {
       let threads = await Thread.find({ board })
         .sort("-bumped_on")
         .populate("replies");
-      console.log(threads);
+      //console.log(threads);
 
       threads = threads
         .map((thread) => {
@@ -125,6 +125,7 @@ module.exports = function (app) {
       delete_password,
       created_on: newTime,
     })
+    console.log(newReply);
     try{
       let threadData = await Thread.findById({thread_id});
       if(threadData){
