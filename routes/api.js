@@ -78,63 +78,6 @@ module.exports = function (app) {
     } catch (err) {
       res.send("There was an error saving in post");
     }
-  })
-    .get(async (req, res) => {
-      // GET ROUTE
-      const { board } = req.params;
-      let threads = await Thread.find({ board })
-        .sort("-bumped_on")
-        .populate("replies");
-      //console.log(threads);
-
-      threads = threads
-        .map((thread) => {
-          let threadToView = {
-            _id: thread._id,
-            text: thread.text,
-            created_on: thread.created_on,
-            bumped_on: thread.bumped_on,
-            replies: thread.replies
-              .sort((a, b) => a.created_on - b.created_on)
-              .slice(0, 3)
-              .map((reply) => {
-                let rep = {
-                  _id: reply._id,
-                  text: reply.text,
-                  created_on: reply.created_on,
-                };
-                return rep;
-              }),
-          };
-          return threadToView;
-        })
-        .slice(0, 10);
-      res.send(threads);
-    });
-
-  app.route("/api/replies/:board").post(async (req, res) => {
-    const { text, delete_password, thread_id } = req.body;
-    const board = req.params;
-
-    let newTime = new Date();
-    const newReply = await Reply.create({
-      board,
-      text,
-      delete_password,
-      created_on: newTime,
-    });
-    console.log(newReply);
-    try {
-      let threadData = await Thread.findById(thread_id);
-      if (threadData) {
-        threadData.bumped_on = newTime;
-        threadData.replies.push(newReply);
-        console.log(threadData);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  })
-  .get(async (req, res) => {});
-  
-};
+  });
+}
+    
