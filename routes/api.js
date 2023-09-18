@@ -141,6 +141,10 @@ module.exports = function (app) {
       }
     })
     .get(async (req, res) => {
+    const thread_id = req.query.thread_id
     
+    try{
+      const threadFound = await Thread.findById(thread_id);
+    }
   });
 };
