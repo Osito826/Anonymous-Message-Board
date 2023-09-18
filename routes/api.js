@@ -119,10 +119,10 @@ module.exports = function (app) {
     .route("/api/replies/:board")
     .post(async (req, res) => {
       const { text, delete_password, thread_id } = req.body;
-      const board = req.params;
+      const { board } = req.params;
 
       let newTime = new Date();
-      const newReply = await Reply.create({
+      const newReply = Reply.create({
         board,
         text,
         delete_password,
@@ -145,9 +145,21 @@ module.exports = function (app) {
 
       try {
         const threadFound = await Thread.findById(thread_id);
-        if(threadFound){
-          let {text, created_on, bumped_on, replies, replycount, _id} = threadDoc;
-      return res.json({text, created_on, bumped_on, replies, replycount, _id})
+        if (threadFound) {
+          let threadToView = {
+            _id: threadFound._id,
+            text: threadFound.text,
+            created_on: threadFound.created_on,
+            bumped_on: threadFound.bumped_on,
+            replies: threadFound.replies.map((reply) => {
+              return {
+                _id: reply._id,
+                text: reply.text,
+                created_on: reply.created_on,
+              };
+            }),
+          };
+          res.send(threadToView);
         }
       } catch (error) {
         console.log(error);
