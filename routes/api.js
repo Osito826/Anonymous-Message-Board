@@ -39,48 +39,46 @@ module.exports = function (app) {
   const Thread = mongoose.model("Thread", threadSchema);
   const Board = mongoose.model("Board", boardSchema);
 
-  app
-    .route("/api/threads/:board")
-    .post(async (req, res) => {
-      const { text, delete_password } = req.body;
-      let board = req.body.board;
-      if (!board) {
-        board = req.params.board;
-      }
+  app.route("/api/threads/:board").post(async (req, res) => {
+    const { text, delete_password } = req.body;
+    let board = req.body.board;
+    if (!board) {
+      board = req.params.board;
+    }
 
-      const newThread = await Thread.create({
-        board,
-        text,
-        delete_password,
-        //created_on: currentDate,
-        //bumped_on: currentDate,
-        replies: [],
-      });
+    const newThread = await Thread.create({
+      board,
+      text,
+      delete_password,
+      //created_on: currentDate,
+      //bumped_on: currentDate,
+      replies: [],
+    });
 
-      try {
-        const boardData = await Board.findOne({ name: board });
-        if (!boardData) {
-          const newBoard = new Board({
-            name: board,
-            threads: [],
-          });
-          newBoard.threads.push(newThread);
-          //console.log(newThread);
-          const data = await newBoard.save();
-          if (data) {
-            res.json(newThread);
-          }
-        } else {
-          boardData.threads.push(newThread);
-          const data = await boardData.save();
-          if (data) {
-            res.json(newThread);
-          }
+    try {
+      const boardData = await Board.findOne({ name: board });
+      if (!boardData) {
+        const newBoard = new Board({
+          name: board,
+          threads: [],
+        });
+        newBoard.threads.push(newThread);
+        //console.log(newThread);
+        const data = await newBoard.save();
+        if (data) {
+          res.json(newThread);
         }
-      } catch (err) {
-        res.send("There was an error saving in post");
+      } else {
+        boardData.threads.push(newThread);
+        const data = await boardData.save();
+        if (data) {
+          res.json(newThread);
+        }
       }
-    })
+    } catch (err) {
+      res.send("There was an error saving in post");
+    }
+  }); /*
     .get(async (req, res) => {
       // GET ROUTE
       const { board } = req.params;
@@ -112,7 +110,7 @@ module.exports = function (app) {
         })
         .slice(0, 10);
       res.send(threads);
-    });
+    });*/
 
   app.route("/api/replies/:board").post(async (req, res) => {
     const { text, delete_password, thread_id } = req.body;
@@ -137,7 +135,8 @@ module.exports = function (app) {
       console.log(error);
     }
   });
-};
+}
+  .get(async (req, res) => {});
 /*
 app.route("/api/threads/:board").post((req, res) => {
   const { text, delete_password } = req.body;
