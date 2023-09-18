@@ -115,3 +115,31 @@ module.exports = function (app) {
       res.send(threads);
     });
 };
+
+app.route("/api/replies/:board").post(async (req, res) => {
+    const { text, delete_password, thread_id } = req.body;
+    const board = req.params;
+
+    let newTime = new Date();
+    const newReply = await Reply.create({
+      board,
+      text,
+      delete_password,
+      created_on: newTime,
+    });
+    console.log(newReply);
+    try {
+      let threadData = await Thread.findById(thread_id);
+      if (threadData) {
+        threadData.bumped_on = newTime;
+        threadData.replies.push(newReply);
+        console.log(threadData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  })
+  .get(async (req, res) => {});
+  
+};
+
