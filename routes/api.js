@@ -145,6 +145,10 @@ module.exports = function (app) {
 
       try {
         const threadFound = await Thread.findById(thread_id);
+        if(threadFound){
+          let {text, created_on, bumped_on, replies, replycount, _id} = threadDoc;
+      return res.json({text, created_on, bumped_on, replies, replycount, _id})
+        }
       } catch (error) {
         console.log(error);
       }
