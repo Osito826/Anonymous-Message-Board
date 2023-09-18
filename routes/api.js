@@ -78,7 +78,7 @@ module.exports = function (app) {
     } catch (err) {
       res.send("There was an error saving in post");
     }
-  }); /*
+  })
     .get(async (req, res) => {
       // GET ROUTE
       const { board } = req.params;
@@ -110,7 +110,7 @@ module.exports = function (app) {
         })
         .slice(0, 10);
       res.send(threads);
-    });*/
+    });
 
   app.route("/api/replies/:board").post(async (req, res) => {
     const { text, delete_password, thread_id } = req.body;
