@@ -131,6 +131,7 @@ module.exports = function (app) {
       if(threadData){
         threadData.bumped_on = newTime;
         threadData.replies.push(newReply);
+        console.log(threadData)
       }
     } catch(error){
       console.log(error);
