@@ -39,7 +39,7 @@ app.use(
 
 app.use(
   helmet.referrerPolicy({
-    policy: "origin"
+    policy: "same-origin"
   })
 );
 

@@ -184,5 +184,10 @@ module.exports = function (app) {
       } catch (error) {
         console.log(error);
       }
-    });
+    })
+  .delete(async (req, res) => {
+    const { thread_id, reply_id, delete_password } = req.body;
+    
+    
+  })
 };
