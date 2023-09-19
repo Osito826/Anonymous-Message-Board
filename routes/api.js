@@ -185,20 +185,24 @@ module.exports = function (app) {
         console.log(error);
       }
     })
-  .delete(async (req, res) => {
-    const { thread_id, reply_id, delete_password } = req.body;
-    
-    try{
-      const replyFound = await Reply.findById(reply_id);
-      if(replyFound && replyFound.reply_id === reply_id){
-        replyFound.reply_id = "[deleted]";
-        await replyFound.save();
-        res.send("success");
-      }else{
-        res.send("incorrect password");
+    .delete(async (req, res) => {
+      const { thread_id, reply_id, delete_password } = req.body;
+
+      try {
+        const replyFound = await Reply.findById(reply_id);
+        if (
+          replyFound &&
+          replyFound.reply_id === reply_id &&
+          replyFound.delete_password === delete_password
+        ) {
+          replyFound.reply_id = "[deleted]";
+          await replyFound.save();
+          res.send("success");
+        } else {
+          res.send("incorrect password");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    }catch (error){
-      console.log(error);
-    }
-  })
+    });
 };
