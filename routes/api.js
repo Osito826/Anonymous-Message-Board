@@ -192,11 +192,12 @@ module.exports = function (app) {
         const replyFound = await Reply.findById(reply_id);
         if (
           replyFound &&
-          replyFound.reply_id === reply_id &&
+          replyFound._id === reply_id &&
           replyFound.delete_password === delete_password
         ) {
-          replyFound.reply_id = "[deleted]";
+          replyFound._id = "[deleted]";
           await replyFound.save();
+          console.log(replyFound);
           res.send("success");
         } else {
           res.send("incorrect password");
