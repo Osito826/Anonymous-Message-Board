@@ -191,8 +191,8 @@ module.exports = function (app) {
     try{
       const replyFound = await Reply.findById(reply_id);
       if(replyFound && replyFound.reply_id === reply_id){
-        await replyFound.delteOne();
         replyFound.reply_id = "[deleted]";
+        await replyFound.save();
         res.send("success");
       }else{
         res.send("incorrect password");
