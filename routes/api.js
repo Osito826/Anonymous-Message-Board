@@ -122,7 +122,7 @@ module.exports = function (app) {
       const { board } = req.params;
 
       let newTime = new Date();
-      const newReply = Reply.create({
+      const newReply = new Reply({
         board,
         text,
         delete_password,
@@ -136,6 +136,7 @@ module.exports = function (app) {
           threadData.replies.push(newReply);
           await threadData.save();
           console.log(threadData);
+          res.send(threadData);
         }
       } catch (error) {
         console.log(error);
