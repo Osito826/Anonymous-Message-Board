@@ -119,12 +119,13 @@ module.exports = function (app) {
     const { board } = req.params;
     
     try{
-      const threadToDelete = await Thread.findByIdAndDelete(thread_id);
-      if(threadToDelete){
+      const threadToDelete = await Thread.findById(thread_id);
+      if(threadToDelete.delete_password == delete_password){
+        await threadToDelete.remove();
         res.send("success");
       }
     }catch (error){
-      res.send("incorrect password")
+       res.send("incorrect password")
     }
   });
 
