@@ -38,10 +38,8 @@ app.use(
 );
 
 app.use(
-  helmet({
-    referrerPolicy: {
-      policy: ["same-origin"],
-    },
+  helmet.referrerPolicy({
+    policy: "origin"
   })
 );
 
