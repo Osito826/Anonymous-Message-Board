@@ -124,11 +124,9 @@ module.exports = function (app) {
           threadToDelete.delete_password === delete_password
         ) {
           await threadToDelete.remove();
-          if (!threadToDelete) {
-            res.send("incorrect password");
-          } else {
-            res.send("success");
-          }
+          res.send("success");
+        } else {
+          res.send("incorrect password");
         }
       } catch (error) {
         console.log(error);
