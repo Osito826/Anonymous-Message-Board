@@ -118,7 +118,7 @@ module.exports = function (app) {
       const { thread_id, delete_password, board } = req.body;
 
       try {
-        const threadToDelete = await Thread.findById(thread_id);
+        let threadToDelete = await Thread.findById(thread_id);
         if (
           threadToDelete &&
           threadToDelete.delete_password === delete_password
