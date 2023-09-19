@@ -188,6 +188,15 @@ module.exports = function (app) {
   .delete(async (req, res) => {
     const { thread_id, reply_id, delete_password } = req.body;
     
-    
+    try{
+      const replyFound = await Reply.findById(reply_id);
+      if(replyFound && replyFound.reply_id === reply_id){
+        await replyFound.delteOne();
+        replyFound.reply_id = [deleted];
+        res.send("success");
+      }
+    }catch (error){
+      console.log(error);
+    }
   })
 };
