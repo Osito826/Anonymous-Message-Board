@@ -123,7 +123,7 @@ module.exports = function (app) {
           threadToDelete &&
           threadToDelete.delete_password === delete_password
         ) {
-          await threadToDelete.remove();
+          await threadToDelete.deleteOne();
           res.send("success");
         } else {
           res.send("incorrect password");

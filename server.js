@@ -24,12 +24,13 @@ app.use(
     action: "same-origin",
   })
 );
-*/
+
 app.use(
   helmet({
     xFrameOptions: { action: "deny" },
   })
 );
+*/
 app.use(
   helmet.dnsPrefetchControl({
     allow: false,
