@@ -113,7 +113,20 @@ module.exports = function (app) {
         })
         .slice(0, 10);
       res.send(threads);
-    });
+    })
+  .delete(async (req, res) => {
+    const { thread_id, delete_password } = req.body;
+    const { board } = req.params;
+    
+    try{
+      const threadToDelete = await Thread.findByIdAndDelete(thread_id);
+      if(threadToDelete){
+        res.send("success");
+      }
+    }catch (error){
+      res.send("incorrect password")
+    }
+  });
 
   app
     .route("/api/replies/:board")
