@@ -6,10 +6,10 @@ const server = require("../server");
 chai.use(chaiHttp);
 
 const threadPostData = { board: "test", text: "test", delete_password: "test" };
-let replyData = { text: "test", delete_password: "test", board: "test" };
+const replyData = { text: "test", delete_password: "test", board: "test" };
 
 suite("Functional Tests", function () {
-  /*test("POST: Creating a new thread", function (done) {
+  test("POST: Creating a new thread", function (done) {
     chai
       .request(server)
       .post("/api/threads/test")
@@ -36,5 +36,5 @@ suite("Functional Tests", function () {
         assert.isBelow(res.body[0].replies.length, 4)
         done()
       })
-  })*/
+  })
 });
