@@ -220,5 +220,8 @@ module.exports = function (app) {
       } catch (error) {
         console.log(error);
       }
-    });
+    })
+  .put(async(req, res) => {
+    
+  })
 };
