@@ -189,7 +189,7 @@ module.exports = function (app) {
       const { thread_id, reply_id, delete_password } = req.body;
 
       try {
-        const replyFound = await Reply.findById(reply_id);
+        const threadWithReply = await Thread.findById(thread_id);
         if (
           replyFound &&
           replyFound._id === reply_id &&
