@@ -138,10 +138,13 @@ module.exports = function (app) {
       try {
         const threadToReport = await Thread.findById(thread_id);
         if (threadToReport) {
-          threadToReport.reported
+          threadToReport.reported = true;
+          await threadToReport.save();
+          res.json("reported");
+          return;
         }
       } catch (error) {
-        console.loog(error);
+        console.log(error);
       }
     });
 
