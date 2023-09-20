@@ -221,20 +221,21 @@ module.exports = function (app) {
         console.log(error);
       }
     })
-  .put(async(req, res) => {
-    const { thread_id, reply_id } = req.body;
-    
-    try{
-      const replyToReport = await Thread.findById();
-      for(let reply of replyToReport.replies){
-        if(replyToReport && reply._id.toString() === reply_id){
-          reply.reported = true;
-          await replyToReport.save();
-          res.send("reported");
+    .put(async (req, res) => {
+      const { thread_id, reply_id } = req.body;
+
+      try {
+        const replyToReport = await Thread.findById(thread_id);
+        for (let reply of replyToReport.replies) {
+          if (replyToReport && reply._id.toString() === reply_id) {
+            reply.reported = true;
+            //reply.bumped_on = new Date();
+            await replyToReport.save();
+            res.send("reported");
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
-    }catch(error){
-      console.log(error);
-    }
-  })
+    });
 };
