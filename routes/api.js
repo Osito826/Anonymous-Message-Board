@@ -227,10 +227,10 @@ module.exports = function (app) {
     try{
       const replyToReport = await Thread.findById();
       for(let reply of replyToReport.replies){
-        if(replyToReport && reply._id === reply_id){
+        if(replyToReport && reply._id.toString() === reply_id){
           reply.reported = true;
           await replyToReport.save();
-          res.send
+          res.send("reported");
         }
       }
     }catch(error){
