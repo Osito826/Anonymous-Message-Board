@@ -195,6 +195,7 @@ module.exports = function (app) {
             reply.text = "[deleted]";
             await threadWithReply.save();
             res.send("success");
+            return;
           }else{
             res.send("incorrect password");
           }
