@@ -190,17 +190,14 @@ module.exports = function (app) {
 
       try {
         const threadWithReply = await Thread.findById(thread_id);
-        if (
-          replyFound &&
-          replyFound._id === reply_id &&
-          replyFound.delete_password === delete_password
-        ) {
-          replyFound._id = "[deleted]";
-          await replyFound.save();
-          console.log(replyFound);
-          res.send("success");
-        } else {
-          res.send("incorrect password");
+        for(let reply of threadWithReply.replies){
+          if(threadWithReply.replies._id === reply_id && threadWithReply.replies.delete_password === delete_password){
+            threadWithReply.text = "[incorrect password]";
+            await threadWithReply.save();
+            res.send("success");
+          }else{
+            res.send("incorrect password");
+          }
         }
       } catch (error) {
         console.log(error);
