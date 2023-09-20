@@ -21,20 +21,21 @@ suite("Functional Tests", function () {
       });
     done();
   });
-  
-  test("#2 GET: Viewing the 10 most recent threads with 3 replies each", function(done) {
-    chai.request(server)
+
+  test("#2 GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
+    chai
+      .request(server)
       .get("/api/threads/test")
-      .end(function(err, res) {
-        assert.equal(res.status, 200)
-        assert.isArray(res.body)
-        assert.isObject(res.body[0])
-        assert.isDefined(res.body[0].text)
-        assert.isDefined(res.body[0].created_on)
-        assert.isDefined(res.body[0].bumped_on)
-        assert.isArray(res.body[0].replies)
-        assert.isBelow(res.body[0].replies.length, 4)
-        done()
-      })
-  })
+      .end(function (err, res) {
+        assert.equal(res.status, 200);
+        assert.isArray(res.body);
+        assert.isObject(res.body[0]);
+        assert.isDefined(res.body[0].text);
+        assert.isDefined(res.body[0].created_on);
+        assert.isDefined(res.body[0].bumped_on);
+        assert.isArray(res.body[0].replies);
+        assert.isBelow(res.body[0].replies.length, 4);
+        done();
+      });
+  });
 });
