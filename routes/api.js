@@ -140,7 +140,7 @@ module.exports = function (app) {
         if (threadToReport) {
           threadToReport.reported = true;
           await threadToReport.save();
-          res.json("reported");
+          res.send("reported");
         }
       } catch (error) {
         console.log(error);
