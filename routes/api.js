@@ -191,8 +191,8 @@ module.exports = function (app) {
       try {
         const threadWithReply = await Thread.findById(thread_id);
         for(let reply of threadWithReply.replies){
-          if(threadWithReply.replies._id === reply_id && threadWithReply.replies.delete_password === delete_password){
-            threadWithReply.text = "[incorrect password]";
+          if(reply._id === reply_id && reply.delete_password === delete_password){
+            reply.text = "[deleted]";
             await threadWithReply.save();
             res.send("success");
           }else{
