@@ -131,6 +131,18 @@ module.exports = function (app) {
       } catch (error) {
         console.log(error);
       }
+    })
+    .put(async (req, res) => {
+      const { thread_id } = req.body;
+
+      try {
+        const threadToReport = await Thread.findById(thread_id);
+        if (threadToReport) {
+          threadToReport.reported
+        }
+      } catch (error) {
+        console.loog(error);
+      }
     });
 
   app
@@ -190,13 +202,16 @@ module.exports = function (app) {
 
       try {
         const threadWithReply = await Thread.findById(thread_id);
-        for(let reply of threadWithReply.replies){
-          if(reply._id.toString() === reply_id && reply.delete_password === delete_password){
+        for (let reply of threadWithReply.replies) {
+          if (
+            reply._id.toString() === reply_id &&
+            reply.delete_password === delete_password
+          ) {
             reply.text = "[deleted]";
             await threadWithReply.save();
             res.send("success");
             //return;
-          }else{
+          } else {
             res.send("incorrect password");
           }
         }
