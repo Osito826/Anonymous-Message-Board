@@ -222,6 +222,19 @@ module.exports = function (app) {
       }
     })
   .put(async(req, res) => {
+    const { thread_id, reply_id } = req.body;
     
+    try{
+      const replyToReport = await Thread.findById();
+      for(let reply of replyToReport.replies){
+        if(replyToReport && reply._id === reply_id){
+          reply.reported = true;
+          await replyToReport.save();
+          res.send
+        }
+      }
+    }catch(error){
+      console.log(error);
+    }
   })
 };
