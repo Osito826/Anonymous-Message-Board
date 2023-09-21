@@ -23,7 +23,7 @@ suite("Functional Tests", function () {
     done();
   });
 
-  test("#2 GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
+  test("GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
     chai
       .request(server)
       .get("/api/threads/test")
