@@ -71,7 +71,7 @@ suite("Functional Tests", function () {
     chai
       .request(server)
       .put("/api/threads/test")
-      .send({ ...threadPostData })
+      .send({ ...threadPostData, thread_id: testThread_id })
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "reported");
