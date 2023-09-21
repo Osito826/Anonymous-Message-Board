@@ -39,4 +39,15 @@ suite("Functional Tests", function () {
         done();
       });
   });
+  
+  test("Delete: Deleting a thread with the incorrect password", function (done){
+    chai
+    .request(server)
+    .delete("api/threads/tests")
+    .send(threadPostData)
+    .end((err, res) => {
+      assert.equal(res.status, 200)
+      
+    })
+  })
 });
