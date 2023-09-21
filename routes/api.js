@@ -127,6 +127,7 @@ module.exports = function (app) {
           res.send("success");
         } else {
           res.send("incorrect password");
+          return;
         }
       } catch (error) {
         console.log(error);

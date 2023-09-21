@@ -45,8 +45,8 @@ suite("Functional Tests", function () {
   test("Delete: Deleting a thread with the incorrect password", function (done) {
     chai
       .request(server)
-      .delete("api/threads/tests")
-      .set("content-type", "application/json")
+      .delete("/api/threads/test")
+      //.set("content-type", "application/json")
       .send({ thread_id: testThread_id, delete_password: "incorrect" })
       .end((err, res) => {
         assert.equal(res.status, 200);
