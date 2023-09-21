@@ -54,17 +54,16 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
-  test("Delete: Deleting a thread with the correct password", function (done){
+
+  test("Delete: Deleting a thread with the correct password", function (done) {
     chai
-    .request(server)
-    .delete("/api/threads/test")
-    .send(threadPostData)
-    .end((err, res) => {
-      assert.equal(res.status, 200)
-      assert.equal(res.body.delete_password, "success")
-      done();
-    })
-    
-  })
+      .request(server)
+      .delete("/api/threads/test")
+      .send({ ...threadPostData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "success");
+        done();
+      });
+  });
 });
