@@ -8,6 +8,8 @@ chai.use(chaiHttp);
 const threadPostData = { board: "test", text: "test", delete_password: "test" };
 const replyData = { text: "test", delete_password: "test", board: "test" };
 
+let testThreadId;
+
 suite("Functional Tests", function () {
   test("POST: Creating a new thread", function (done) {
     chai
@@ -18,6 +20,7 @@ suite("Functional Tests", function () {
         assert.equal(res.status, 200);
         assert.isDefined(res.body._id);
         assert.isArray(res.body.replies);
+      testThread_id = res.body._id;
       });
     done();
   });
@@ -43,7 +46,7 @@ suite("Functional Tests", function () {
     chai
       .request(server)
       .delete("api/threads/tests")
-      .send({ ...threadPostData, thread_id: thread._id.toString(), delete_password: "incorrect" })
+      .send({ thread_id: testThreadId, delete_password: "incorrect" })
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "incorrect password");
