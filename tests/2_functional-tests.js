@@ -66,7 +66,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
+
   test("Delete: Deleting a thread with the correct password", function (done) {
     chai
       .request(server)
@@ -79,6 +79,18 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Create:")
-  
+  test("Post: Creating a new reply", function (done) {
+    chai
+      .request(server)
+      .post("/api/replies/test")
+      .send({ ...replyData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isDefined(res.body._id);
+        assert.isDefined(res.body.replies[0].text);
+        assert.isDefined(res.body.delete_password);
+        assert.isArray(res.body.replies);
+        done();
+      });
+  });
 });
