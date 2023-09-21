@@ -55,6 +55,18 @@ suite("Functional Tests", function () {
       });
   });
 
+  test("Put: Reporting a thread", function (done) {
+    chai
+      .request(server)
+      .put("/api/threads/test")
+      .send({ ...threadPostData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "reported");
+        done();
+      });
+  });
+  
   test("Delete: Deleting a thread with the correct password", function (done) {
     chai
       .request(server)
@@ -67,15 +79,6 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Put: Reporting a thread", function (done) {
-    chai
-      .request(server)
-      .put("/api/threads/test")
-      .send({ ...threadPostData, thread_id: testThread_id })
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.equal(res.text, "reported");
-        done();
-      });
-  });
+  test("Create:")
+  
 });
