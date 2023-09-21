@@ -9,7 +9,6 @@ const threadPostData = { board: "test", text: "test", delete_password: "test" };
 const replyData = { text: "test", delete_password: "test", board: "test" };
 
 suite("Functional Tests", function () {
-  
   test("POST: Creating a new thread", function (done) {
     chai
       .request(server)
@@ -39,15 +38,16 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
-  test("Delete: Deleting a thread with the incorrect password", function (done){
+
+  test("Delete: Deleting a thread with the incorrect password", function (done) {
     chai
-    .request(server)
-    .delete("api/threads/tests")
-    .send(threadPostData)
-    .end((err, res) => {
-      assert.equal(res.status, 200)
-      
-    })
-  })
+      .request(server)
+      .delete("api/threads/tests")
+      .send({ ...threadPostData, thread_id: thread._id.toString(), delete_password: "incorrect" })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "incorrect password");
+        done();
+      });
+  });
 });
