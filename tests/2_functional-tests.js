@@ -66,4 +66,16 @@ suite("Functional Tests", function () {
         done();
       });
   });
+
+  test("Put: Reporting a thread", function (done) {
+    chai
+      .request(server)
+      .put("/api/threads/test")
+      .send({ ...threadPostData })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "reported");
+        done();
+      });
+  });
 });
