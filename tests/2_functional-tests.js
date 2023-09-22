@@ -88,7 +88,7 @@ suite("Functional Tests", function () {
         assert.equal(res.status, 200);
         assert.isDefined(res.body._id);
         assert.isDefined(res.body.replies[0].text);
-        assert.isDefined(res.body.delete_password);
+        assert.isDefined(res.body.replies[0].delete_password);
         assert.isArray(res.body.replies);
         done();
       });
