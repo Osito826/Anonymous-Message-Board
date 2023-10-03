@@ -78,7 +78,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  /*
+  
   test("Post: Creating a new reply", function (done) {
     chai
       .request(server)
@@ -94,5 +94,7 @@ suite("Functional Tests", function () {
         assert.isArray(res.body.replies);
         done();
       });
-  });*/
+  });
+  
+  
 });
