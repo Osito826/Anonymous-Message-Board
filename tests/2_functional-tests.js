@@ -24,6 +24,23 @@ suite("Functional Tests", function () {
         done();
       });
   });
+  
+  test("Post: Creating a new reply", function (done) {
+    chai
+      .request(server)
+      .post("/api/replies/test")
+      .send({ ...replyData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isDefined(res.body._id);
+        assert.isDefined(res.body.replies[0].text);
+        //assert.isDefined(res.body.replies[0].delete_password);
+        assert.isDefined(res.body.replies[0].created_on);
+        assert.isObject(res.body.replies[0]);
+        assert.isArray(res.body.replies);
+        done();
+      });
+  });
 
   test("GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
     chai
@@ -75,23 +92,6 @@ suite("Functional Tests", function () {
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "success");
-        done();
-      });
-  });
-
-  test("Post: Creating a new reply", function (done) {
-    chai
-      .request(server)
-      .post("/api/replies/test")
-      .send({ ...replyData, thread_id: testThread_id })
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.isDefined(res.body._id);
-        assert.isDefined(res.body.replies[0].text);
-        //assert.isDefined(res.body.replies[0].delete_password);
-        assert.isDefined(res.body.replies[0].created_on);
-        assert.isObject(res.body.replies[0]);
-        assert.isArray(res.body.replies);
         done();
       });
   });
