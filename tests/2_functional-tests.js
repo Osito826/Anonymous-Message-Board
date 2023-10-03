@@ -54,6 +54,18 @@ suite("Functional Tests", function () {
         done();
       });
   });
+  
+  test("Delete: Deleting a thread with the correct password", function (done) {
+    chai
+      .request(server)
+      .delete("/api/threads/test")
+      .send({ ...threadPostData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "success");
+        done();
+      });
+  });
 
   test("Put: Reporting a thread", function (done) {
     chai
@@ -66,16 +78,21 @@ suite("Functional Tests", function () {
         done();
       });
   });
-
-  test("Delete: Deleting a thread with the correct password", function (done) {
+  /*
+  test("Post: Creating a new reply", function (done) {
     chai
       .request(server)
-      .delete("/api/threads/test")
-      .send({ ...threadPostData, thread_id: testThread_id })
+      .post("/api/replies/test")
+      .send({ ...replyData, thread_id: testThread_id })
       .end((err, res) => {
         assert.equal(res.status, 200);
-        assert.equal(res.text, "success");
+        assert.isDefined(res.body._id);
+        assert.isDefined(res.body.replies[0].text);
+        //assert.isDefined(res.body.replies[0].delete_password);
+        assert.isDefined(res.body.replies[0].created_on);
+        assert.isObject(res.body.replies[0]);
+        assert.isArray(res.body.replies);
         done();
       });
-  });
+  });*/
 });
