@@ -96,6 +96,15 @@ suite("Functional Tests", function () {
       });
   });
   
-  
+  test("Get: Viewing a single thread with all replies", function (done) {
+    chai
+    .request(server)
+    .get("/api/replies/test")
+    .send({thread_id: testThread_id})
+    .end((err,res)=> {
+      assert.equal(res.status, 200);
+      assert.equal()
+    })
+  })
   
 });
