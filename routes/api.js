@@ -216,6 +216,7 @@ module.exports = function (app) {
             //return;
           } else {
             res.send("incorrect password");
+            //return;
           }
         }
       } catch (error) {
