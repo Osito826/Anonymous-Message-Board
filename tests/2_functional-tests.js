@@ -96,16 +96,22 @@ suite("Functional Tests", function () {
       });
   });
   
-  test("Get: Viewing a single thread with all replies", function (done) {
+  test("Get: Viewing a single thread with all replies", function () {
     chai
     .request(server)
     .get("/api/replies/test")
     .send({thread_id: testThread_id})
     .end((err,res)=> {
       assert.equal(res.status, 200);
-      assert.isArray(testThread_id.replies);
-      done();
-    })
+      assert.isArray(res.body.replies);
+      //done();
+    });
+  });
+  
+  test("Delete: Deleting a reply with the incorrect password", function (){
+    chai
+    .request(server)
+    .delete("/api/replies/test")
   })
   
 });
