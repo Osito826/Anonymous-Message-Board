@@ -112,6 +112,11 @@ suite("Functional Tests", function () {
     chai
     .request(server)
     .delete("/api/replies/test")
+    .send({thread_id: testThread_id, delete_password: "incorrect"})
+    .end((err, res)=> {
+      assert.equal(res.status, 200);
+      assert.equal(res.text, "incorrect password");
+    })
   })
   
 });
