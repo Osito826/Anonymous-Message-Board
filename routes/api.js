@@ -205,12 +205,14 @@ module.exports = function (app) {
 
       try {
         const threadWithReply = await Thread.findById(thread_id);
+        console.log(threadWithReply);
         for (let reply of threadWithReply.replies) {
           if (
             reply._id.toString() === reply_id &&
             reply.delete_password === delete_password
           ) {
             reply.text = "[deleted]";
+            threadWithReply.bumped_on = new Date()
             await threadWithReply.save();
             res.send("success");
             //return;
