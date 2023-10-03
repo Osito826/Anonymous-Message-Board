@@ -103,7 +103,8 @@ suite("Functional Tests", function () {
     .send({thread_id: testThread_id})
     .end((err,res)=> {
       assert.equal(res.status, 200);
-      assert.equal()
+      assert.isArray(testThread_id.replies);
+      done();
     })
   })
   
