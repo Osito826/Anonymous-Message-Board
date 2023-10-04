@@ -130,7 +130,7 @@ module.exports = function (app) {
           return;
         }
       } catch (error) {
-        console.log(error);
+        console.log("incorrect password");
       }
     })
     .put(async (req, res) => {

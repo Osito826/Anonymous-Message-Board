@@ -26,7 +26,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Post: Creating a new reply", function (done) {
+  test("POST: Creating a new reply", function (done) {
     chai
       .request(server)
       .post("/api/replies/test")
@@ -61,7 +61,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Get: Viewing a single thread with all replies", function (done) {
+  test("GET: Viewing a single thread with all replies", function (done) {
     chai
       .request(server)
       .get("/api/replies/test")
@@ -74,7 +74,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Put: Reporting a thread", function (done) {
+  test("PUT: Reporting a thread", function (done) {
     chai
       .request(server)
       .put("/api/threads/test")
@@ -86,7 +86,7 @@ suite("Functional Tests", function () {
       });
   });
   
-  test("Put: Reporting a reply", function (done) {
+  test("PUT: Reporting a reply", function (done) {
     chai
     .request(server)
     .put("/api/replies/test")
@@ -99,7 +99,7 @@ suite("Functional Tests", function () {
   })
   
 
-  test("Delete: Deleting a thread with the incorrect password", function (done) {
+  test("DELETE: Deleting a thread with the incorrect password", function (done) {
     chai
       .request(server)
       .delete("/api/threads/test")
@@ -112,7 +112,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Delete: Deleting a thread with the correct password", function (done) {
+  test("DELETE: Deleting a thread with the correct password", function (done) {
     chai
       .request(server)
       .delete("/api/threads/test")
@@ -124,7 +124,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Delete: Deleting a reply with the incorrect password", function (done) {
+  test("DELETE: Deleting a reply with the incorrect password", function (done) {
     chai
       .request(server)
       .delete("/api/replies/test")
