@@ -83,7 +83,7 @@ suite("Functional Tests", function () {
     chai
       .request(server)
       .post("/api/replies/test")
-      .send({ ...replyData, thread_id: testThread_id })
+      .send({ ...replyData, thread_id: testThread_id.toString() })
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.isDefined(res.body._id);
