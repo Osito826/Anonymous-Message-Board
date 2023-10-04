@@ -85,6 +85,19 @@ suite("Functional Tests", function () {
         done();
       });
   });
+  
+  test("Put: Reporting a reply", function (done) {
+    chai
+    .request(server)
+    .put("/api/replies/test")
+    .send({reply_id: testReply_id, thread_id: testThread_id})
+    .end((err, res)=> {
+      assert.equal(res.status, 200)
+      assert.equal(res.text, "reported")
+      done();
+    })
+  })
+  
 
   test("Delete: Deleting a thread with the incorrect password", function (done) {
     chai
