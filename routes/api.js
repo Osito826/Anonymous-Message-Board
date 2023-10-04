@@ -205,7 +205,7 @@ module.exports = function (app) {
 
       try {
         const threadWithReply = await Thread.findById(thread_id);
-        console.log(threadWithReply);
+        console.log(log: "threadWithReply");
         for (let reply of threadWithReply.replies) {
           if (
             reply._id.toString() === reply_id &&
