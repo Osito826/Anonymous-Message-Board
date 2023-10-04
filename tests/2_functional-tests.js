@@ -25,25 +25,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-
-  test("Post: Creating a new reply", function (done) {
-    chai
-      .request(server)
-      .post("/api/replies/test")
-      .send({ ...replyData, thread_id: testThread_id })
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.isDefined(res.body._id);
-        assert.isDefined(res.body.replies[0].text);
-        //assert.isDefined(res.body.replies[0].delete_password);
-        assert.isDefined(res.body.replies[0].created_on);
-        assert.isObject(res.body.replies[0]);
-        assert.isArray(res.body.replies);
-        testReply_id = res.body.replies[0]._id;
-        done();
-      });
-  });
-
+  
   test("GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
     chai
       .request(server)
@@ -60,32 +42,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-
-  test("Get: Viewing a single thread with all replies", function (done) {
-    chai
-      .request(server)
-      .get("/api/replies/test")
-      .query({ thread_id: testThread_id })
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.isArray(res.body.replies);
-        assert.equal(res.body._id, testThread_id);
-        done();
-      });
-  });
-
-  test("Put: Reporting a thread", function (done) {
-    chai
-      .request(server)
-      .put("/api/threads/test")
-      .send({ ...threadPostData, thread_id: testThread_id })
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.equal(res.text, "reported");
-        done();
-      });
-  });
-
+  
   test("Delete: Deleting a thread with the incorrect password", function (done) {
     chai
       .request(server)
@@ -107,6 +64,49 @@ suite("Functional Tests", function () {
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "success");
+        done();
+      });
+  });
+  
+  test("Put: Reporting a thread", function (done) {
+    chai
+      .request(server)
+      .put("/api/threads/test")
+      .send({ ...threadPostData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "reported");
+        done();
+      });
+  });
+
+  test("Post: Creating a new reply", function (done) {
+    chai
+      .request(server)
+      .post("/api/replies/test")
+      .send({ ...replyData, thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isDefined(res.body._id);
+        assert.isDefined(res.body.replies[0].text);
+        //assert.isDefined(res.body.replies[0].delete_password);
+        assert.isDefined(res.body.replies[0].created_on);
+        assert.isObject(res.body.replies[0]);
+        assert.isArray(res.body.replies);
+        testReply_id = res.body.replies[0]._id;
+        done();
+      });
+  });
+
+  test("Get: Viewing a single thread with all replies", function (done) {
+    chai
+      .request(server)
+      .get("/api/replies/test")
+      .query({ thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isArray(res.body.replies);
+        assert.equal(res.body._id, testThread_id);
         done();
       });
   });
