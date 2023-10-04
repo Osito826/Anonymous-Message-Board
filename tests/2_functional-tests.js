@@ -139,4 +139,19 @@ suite("Functional Tests", function () {
         done();
       });
   });
+  
+  test("DELETE: Deleting a reply with the correct password", function (done) {
+    chai
+    .request(server)
+    .delete("/api/replies/test")
+    .send({
+      thread_id: testThread_id,
+      reply_id: testReply_id.toString(),
+      delete_password: "test"
+    })
+    .end((err, res)=> {
+      assert.equal(res.status, 200)
+      assert.equal(res.text, "success")
+    })
+  })
 });
