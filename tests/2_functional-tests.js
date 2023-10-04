@@ -39,7 +39,7 @@ suite("Functional Tests", function () {
         assert.isDefined(res.body.replies[0].created_on);
         assert.isObject(res.body.replies[0]);
         assert.isArray(res.body.replies);
-        testReply_id = res.body[0].replies[0]._id;
+        testReply_id = res.body.threads[0].replies[0]._id;
         done();
       });
   });
