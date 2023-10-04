@@ -108,7 +108,7 @@ suite("Functional Tests", function () {
       });
   });
 
-  test("Delete: Deleting a reply with the incorrect password", function () {
+  test("Delete: Deleting a reply with the incorrect password", function (done) {
     chai
       .request(server)
       .delete("/api/replies/test")
@@ -116,6 +116,7 @@ suite("Functional Tests", function () {
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "incorrect password");
+        done();
       });
   });
 });
