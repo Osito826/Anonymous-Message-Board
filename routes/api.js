@@ -215,10 +215,9 @@ module.exports = function (app) {
             threadWithReply.bumped_on = new Date();
             await threadWithReply.save();
             res.send("success");
-            //return;
+            return;
           } else {
             res.send("incorrect password");
-            //return;
           }
         }
       } catch (error) {
