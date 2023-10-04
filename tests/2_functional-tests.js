@@ -24,7 +24,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
+
   test("GET: Viewing the 10 most recent threads with 3 replies each", function (done) {
     chai
       .request(server)
@@ -54,7 +54,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
+
   test("Delete: Deleting a thread with the correct password", function (done) {
     chai
       .request(server)
@@ -78,7 +78,7 @@ suite("Functional Tests", function () {
         //done();
       });
   });
-  
+
   test("Post: Creating a new reply", function () {
     chai
       .request(server)
@@ -95,28 +95,27 @@ suite("Functional Tests", function () {
         //done();
       });
   });
-  
+
   test("Get: Viewing a single thread with all replies", function () {
     chai
-    .request(server)
-    .get("/api/replies/test")
-    .send({thread_id: testThread_id})
-    .end((err,res)=> {
-      assert.equal(res.status, 200);
-      assert.isArray(res.body.replies);
-      //done();
-    });
+      .request(server)
+      .get("/api/replies/test")
+      .send({ thread_id: testThread_id })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isArray(res.body.replies);
+        //done();
+      });
   });
-  
-  test("Delete: Deleting a reply with the incorrect password", function (){
+
+  test("Delete: Deleting a reply with the incorrect password", function () {
     chai
-    .request(server)
-    .delete("/api/replies/test")
-    .send({thread_id: testThread_id, delete_password: "incorrect"})
-    .end((err, res)=> {
-      assert.equal(res.status, 200);
-      assert.equal(res.text, "incorrect password");
-    })
-  })
-  
+      .request(server)
+      .delete("/api/replies/test")
+      .send({ thread_id: testThread_id, delete_password: "incorrect" })
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, "incorrect password");
+      });
+  });
 });

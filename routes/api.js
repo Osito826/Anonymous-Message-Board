@@ -161,14 +161,14 @@ module.exports = function (app) {
         delete_password,
         created_on: newTime,
       });
-      console.log(newReply);
+      //console.log(newReply);
       try {
         let threadData = await Thread.findById(thread_id);
         if (threadData) {
           threadData.bumped_on = newTime;
           threadData.replies.push(newReply);
           await threadData.save();
-          console.log(threadData);
+          //console.log(threadData);
           res.send(threadData);
         }
       } catch (error) {
@@ -205,14 +205,14 @@ module.exports = function (app) {
 
       try {
         const threadWithReply = await Thread.findById(thread_id);
-        console.log(log: "threadWithReply");
+        console.log(threadWithReply);
         for (let reply of threadWithReply.replies) {
           if (
             reply._id.toString() === reply_id &&
             reply.delete_password === delete_password
           ) {
             reply.text = "[deleted]";
-            threadWithReply.bumped_on = new Date()
+            threadWithReply.bumped_on = new Date();
             await threadWithReply.save();
             res.send("success");
             //return;
