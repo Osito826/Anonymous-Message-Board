@@ -9,6 +9,7 @@ const threadPostData = { board: "test", text: "test", delete_password: "test" };
 const replyData = { text: "test", delete_password: "test", board: "test" };
 
 let testThread_id;
+let testReply_id;
 
 suite("Functional Tests", function () {
   test("POST: Creating a new thread", function (done) {
@@ -24,7 +25,7 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
+
   test("Post: Creating a new reply", function (done) {
     chai
       .request(server)
@@ -38,6 +39,7 @@ suite("Functional Tests", function () {
         assert.isDefined(res.body.replies[0].created_on);
         assert.isObject(res.body.replies[0]);
         assert.isArray(res.body.replies);
+        testReply_id = res.body.threads[0].replies[0]._id;
         done();
       });
   });
@@ -58,19 +60,20 @@ suite("Functional Tests", function () {
         done();
       });
   });
-  
+
   test("Get: Viewing a single thread with all replies", function (done) {
     chai
       .request(server)
       .get("/api/replies/test")
-      .send({ thread_id: testThread_id })
+      .query({ thread_id: testThread_id })
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.isArray(res.body.replies);
+        assert.equal(res.body._id, testThread_id);
         done();
       });
   });
-  
+
   test("Put: Reporting a thread", function (done) {
     chai
       .request(server)
@@ -112,7 +115,11 @@ suite("Functional Tests", function () {
     chai
       .request(server)
       .delete("/api/replies/test")
-      .send({ thread_id: testThread_id, delete_password: "incorrect" })
+      .send({
+        thread_id: testThread_id,
+        reply_id: testReply_id,
+        delete_password: "incorrect",
+      })
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.text, "incorrect password");
