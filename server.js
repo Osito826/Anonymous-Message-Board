@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const helmet = require("helmet");
-/*
+
 app.use(
   helmet.frameguard({
     action: "same-origin",
@@ -30,7 +30,7 @@ app.use(
     xFrameOptions: { action: "deny" },
   })
 );
-*/
+
 app.use(
   helmet.dnsPrefetchControl({
     allow: false,
